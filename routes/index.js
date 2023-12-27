@@ -31,13 +31,14 @@ r.post('/refreshToken',(req,res)=>{
 r.patch('/info/:id' , userController.payment)
 
  
+//r.get('/admin',adminController.adminAuthen, adminController.listUser)
 
-
-r.get('/admin',adminController.adminAuthen,async(req,res)=>{
-    const data= req.body;
-    console.log(data);
-    res.json(data);
-})
+// r.get('/admin',adminController.adminAuthen,async(req,res)=>{
+//     const 
+//     const data= req.body;
+//     console.log(data);
+//     res.json(data);
+// })
 
 
 r.get('/info/:id',userController.authenToken,async (req,res)=>{

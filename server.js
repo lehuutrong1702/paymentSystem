@@ -12,9 +12,16 @@ const app= express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-
+app.use(express.urlencoded({extended:false}));
 let refreshTokens = []; // database 
-
+//view engine
+import {create} from 'express-handlebars'
+const hbs = create({
+  extname: '.hbs'
+})
+app.engine('hbs', hbs.engine);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
 const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;

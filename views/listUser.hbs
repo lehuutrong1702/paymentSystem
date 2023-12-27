@@ -1,0 +1,123 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary my-3 btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal">Add
+                User</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each listUser}}
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.balance}}</td>
+                        <td>
+                            <a class="btn btn-danger btn-delete"
+                                onclick="return confirm('Are you sure you want to delete?')"
+                                data-bs-id="{{this.id}}">Delete</a>
+                            <a class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                data-bs-id="{{this.id}}">Update</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add category form -->
+                    <form action="/admin" method="post" enctype="application/x-www-form-urlencoded">
+                        <div class="mb-3">
+                            <label for="idUser" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="idUser" name="idUser"
+                                placeholder="Enter id user">
+                        </div>
+                        <div class="mb-3">
+                            <label for="balanceUser" class="form-label">Balance</label>
+                            <input type="text" class="form-control" id="balanceUser" name="balanceUser"
+                                placeholder="Enter balance user. Example: $200000">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-add">Add</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Display ID -->
+                    <div class="mb-3">
+                        <label for="UserId" class="form-label">ID:</label>
+                        <span id="UserId"></span> <!-- This will display the ID -->
+                    </div>
+                    <!-- Edit category form -->
+                    <form id="f">
+                        <div class="mb-3">
+                            <label for="balanceUser" class="form-label">Balance</label>
+                            <input type="text" class="form-control" id="balanceUser" name="balanceUser"
+                                placeholder="Enter balance user. Example: $200000">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-save">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(".btn-delete").click(function (e) {
+        var ID = $(this).data('bs-id');
+        $.ajax({
+            contentType: "application/x-www-form-urlencoded",
+            url: 'admin/' + ID,
+            type: "DELETE",
+            success: function (result) {
+                $("body").html(result);
+            }
+        })
+    })
+
+    $(".btn-edit").click(function (e) {
+        e.preventDefault();
+        var ID = $(this).data('bs-id');
+        $("#UserId").text(ID);
+        $(".btn-save").click(function (event) {
+            event.preventDefault();
+            const req = $("#f").serialize();
+            $.ajax({
+                contentType: "application/x-www-form-urlencoded",
+                url: 'admin/' + ID,
+                type: "PUT",
+                data: req,
+                success: function (result) {
+                    $("body").html(result);
+                }
+            });
+        });
+    });
+</script>

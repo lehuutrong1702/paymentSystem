@@ -10,5 +10,8 @@ dotenv.config();
 const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;
 r.patch('/:id',adminController.adminAuthen,adminController.loadMoney);
-
+r.get('/',adminController.adminAuthen, adminController.listUser);
+r.post('/',adminController.adminAuthen, adminController.addUser);
+r.put('/:id', adminController.adminAuthen, adminController.updateUser);
+r.delete('/:id', adminController.adminAuthen, adminController.deleteUser);
 export default r ;
