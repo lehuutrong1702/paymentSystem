@@ -20,6 +20,20 @@ const userC = {
         })
       },
       
+      info: async function info(req,res) {
+       //   const id = req.params.id ;
+        try{ 
+          console.log(req.params.id);
+          const w =  await wallet.getByID(req.params.id);
+          res.json(w);
+          res.status(200)} 
+          catch (err){
+            console.log(err);
+            res.status(404);
+            res.json("not found id")
+          } ;
+      },
+
     
      payment: async function  payment(req,res) {
       try{  
@@ -43,7 +57,7 @@ const userC = {
           console.log(err);
           res.status(404);
           res.json("not found id")
-        }     
+        } 
       }
       
 }
