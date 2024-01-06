@@ -28,8 +28,9 @@ r.post('/refreshToken',(req,res)=>{
   })
 });
 
-r.patch('/info/:id' , userController.payment)
+r.post('/:id/payment',userController.payment)
 
+<<<<<<< HEAD
  
 //r.get('/admin',adminController.adminAuthen, adminController.listUser)
 
@@ -47,6 +48,13 @@ r.get('/info/:id',userController.authenToken,async (req,res)=>{
   const rs =  await wallet.getByID(req.params.id);
   res.json(rs);
 })
+=======
+r.post('/',userController.create);
+
+r.post('/:id' , userController.loadMoney)
+
+r.get('/:id',userController.authenToken,userController.info);
+>>>>>>> Trong
 
 r.route('/login').post((req,res) =>{
  

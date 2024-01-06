@@ -7,8 +7,6 @@ const pgp = pg ({
     capSQL: true
 })
 
-
-
 const cn = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -23,8 +21,9 @@ const database = {
         let con = null;
         try{
             con = await db.connect();
-            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = $1
-             LIMIT ${perPage} OFFSET ${(page-1)*perPage} `, [value]);
+            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = '${value}'
+             LIMIT ${perPage} OFFSET ${(page-1)*perPage} `);
+            
             return rs;
         }catch(error){
             throw error;
@@ -34,6 +33,23 @@ const database = {
             }
         }
     },
+    findByRange: async (tbName,fieldName,start,end,page,perPage) =>{
+        let con = null;
+        try{
+            con = await db.connect();
+            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" >= ${start} 
+            AND "${fieldName}" < ${end}
+            LIMIT ${perPage} OFFSET ${(page-1)*perPage} `);
+            return rs;
+        }catch(error){
+            throw error;
+        }finally{
+            if(con){
+                con.done();
+            }
+        }
+    },
+
     findOne: async (tbName, fieldName, value) => {
         let con = null;
         try{
@@ -41,7 +57,7 @@ const database = {
             const rs = await con.oneOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = $1`, [value]);
             return rs;
         }catch(error){
-            throw error;
+            throw error; 
         }finally{
             if(con){
                 con.done();
@@ -64,6 +80,7 @@ const database = {
             }
         }
     },
+<<<<<<< HEAD
     findAll: async (tbName,page,perPage) => {
         let con = null;
         try{
@@ -101,6 +118,15 @@ const database = {
             con = await db.connect();
             let sql = `DELETE FROM "${tbName}" WHERE "${fieldName}" = $1`;
             await con.none(sql, [String(value)]);
+=======
+    insert: async(tbName, obj) => {
+        let con = null;
+        try {
+            con = await db.connect();
+            let sql = pgp.helpers.insert(obj,null, tbName);
+            const rs = await con.none(sql);
+            return rs;
+>>>>>>> Trong
         } catch (error){
             throw error;
         } finally {
@@ -108,7 +134,12 @@ const database = {
                 con.done();
             }
         }
+<<<<<<< HEAD
     }
+=======
+    },
+>>>>>>> Trong
 }
+
 
 export default database;

@@ -20,6 +20,7 @@ const v = class wallet {
         console.log(wallet);
        // return wallet;
     };
+<<<<<<< HEAD
     static async getAll(page, perPage){
         var wallet = await db.findAll(tbName, page, perPage)
         return wallet;
@@ -32,6 +33,13 @@ const v = class wallet {
     static async addWallet(wallet){
         var wallet = await db.add(tbName, wallet);
         return wallet;
+=======
+
+    static async createWallet(wallet){
+        console.log(wallet);
+        var wallet = await db.insert(tbName,wallet);
+       
+>>>>>>> Trong
     }
 
 }
