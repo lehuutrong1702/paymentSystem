@@ -34,6 +34,23 @@ const database = {
             }
         }
     },
+    findByRange: async (tbName,fieldName,start,end,page,perPage) =>{
+        let con = null;
+        try{
+            con = await db.connect();
+            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" >= ${start} 
+            AND "${fieldName}" < ${end}
+            LIMIT ${perPage} OFFSET ${(page-1)*perPage} `);
+            return rs;
+        }catch(error){
+            throw error;
+        }finally{
+            if(con){
+                con.done();
+            }
+        }
+    },
+
     findOne: async (tbName, fieldName, value) => {
         let con = null;
         try{

@@ -2,6 +2,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import wallet from '../model/wallet.js';
+import transaction from '../model/transaction.js';
 const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;
 dotenv.config();
@@ -18,6 +19,7 @@ const userC = {
           if(data.id != req.params.id) res.sendStatus(401); 
            next();
         })
+      //  next();
       },
       create: async function create(req,res) {
           console.log(req.body.id);
@@ -33,7 +35,6 @@ const userC = {
          }
       },
       info: async function info(req,res) {
-       //   const id = req.params.id ;
         try{ 
           console.log(req.params.id);
           const w =  await wallet.getByID(req.params.id);
@@ -49,15 +50,32 @@ const userC = {
     
      payment: async function  payment(req,res) {
       try{  
+
+        
+
         const field = req.body;
         console.log(field);
         const w =  await wallet.getByID(req.params.id);
+        var date = new Date().getTime();
+       // date= Date.parse(date);
+        let current = new Date();
+        let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+        let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+        let dateTime = cDate + ' ' + cTime;
+       // console.log(dateTime);
+      //  const dateFormatted = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`
+        const userTransaction = new transaction(w.id, dateTime,field.balance);
+        const adminTransaction = new transaction('admin', dateTime, -(field.balance));
+        
+        await transaction.createTransaction(userTransaction);
+        await transaction.createTransaction(adminTransaction);
+
         var newStr = Number(w.balance.replace(/[^0-9.-]+/g,""));
         console.log(newStr);
         w.balance = parseInt (newStr) + parseInt(field.balance);
         console.log(w);
         await wallet.updateBalance(w);
-        const admin =    await wallet.getByID('admin');
+        const admin =   await wallet.getByID('admin');
         var newStr = Number(admin.balance.replace(/[^0-9.-]+/g,""));
         console.log(newStr);
         admin.balance = parseInt (newStr) - parseInt(field.balance);
