@@ -19,7 +19,19 @@ const userC = {
            next();
         })
       },
-      
+      create: async function create(req,res) {
+          console.log(req.body.id);
+           const id = req.body.id
+         try{
+           const wa = new wallet(id,0)
+          const w = await  wallet.createWallet(wa);
+          await  res.json(wa);
+         }catch(err){
+          console.log(err);
+          res.status(404);
+          res.json("insert wallet error");
+         }
+      },
       info: async function info(req,res) {
        //   const id = req.params.id ;
         try{ 
@@ -33,7 +45,7 @@ const userC = {
             res.json("not found id")
           } ;
       },
-
+      
     
      payment: async function  payment(req,res) {
       try{  

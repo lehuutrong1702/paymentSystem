@@ -29,10 +29,11 @@ r.post('/refreshToken',(req,res)=>{
 });
 
 
-r.patch('/info/:id' , userController.payment)
+r.post('/',userController.create);
 
-r.get('/info/:id',userController.authenToken,userController.info
-);
+r.patch('/:id' , userController.payment)
+
+r.get('/:id',userController.authenToken,userController.info);
 
 r.route('/login').post((req,res) =>{
  

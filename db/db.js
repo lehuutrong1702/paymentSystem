@@ -64,6 +64,22 @@ const database = {
             }
         }
     },
+    insert: async(tbName, obj) => {
+        let con = null;
+        try {
+            con = await db.connect();
+            let sql = pgp.helpers.insert(obj,null, tbName);
+            const rs = await con.none(sql);
+            return rs;
+        } catch (error){
+            throw error;
+        } finally {
+            if(con){
+                con.done();
+            }
+        }
+    },
 }
+
 
 export default database;

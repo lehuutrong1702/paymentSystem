@@ -19,8 +19,12 @@ const v = class wallet {
         var wallet = await db.update(tbName, {field:'id', value:(wallet.id)}, wallet)
         console.log(wallet);
        // return wallet;
-        
+    };
 
+    static async createWallet(wallet){
+        console.log(wallet);
+        var wallet = await db.insert(tbName,wallet);
+       
     }
 
 }
