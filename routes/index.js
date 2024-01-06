@@ -28,10 +28,11 @@ r.post('/refreshToken',(req,res)=>{
   })
 });
 
+r.post('/:id/payment',userController.payment)
 
 r.post('/',userController.create);
 
-r.patch('/:id' , userController.payment)
+r.post('/:id' , userController.loadMoney)
 
 r.get('/:id',userController.authenToken,userController.info);
 

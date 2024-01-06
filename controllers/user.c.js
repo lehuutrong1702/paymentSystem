@@ -7,7 +7,16 @@ const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;
 dotenv.config();
 const userC = {
- 
+        loadMoney: async (req,res)=>{
+          const field= req.body;
+          const id = req.params.id;
+          const w = await wallet.getByID(id);
+          var newStr = Number(w.balance.replace(/[^0-9.-]+/g,""));
+          console.log(newStr);
+          w.balance = parseInt (newStr) + parseInt(field.balance);
+          wallet.updateBalance(w);
+          res.json(w);
+      },
     authenToken: function authenToken(req,res,next) {
         const authorizationHeader = req.headers['authorization'];
       
