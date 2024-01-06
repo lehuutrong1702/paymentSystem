@@ -2,6 +2,8 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import wallet from '../model/wallet.js';
+import transaction from '../model/transaction.js';
+import util from '../utils/util.js';
 const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;
 dotenv.config();
@@ -28,7 +30,14 @@ const adminController = {
            next();
         })
       },
-    
+    getAllTransaction: async (req,res,next) =>{
+        const start = req.query.start;
+        const end = req.query.end;
+        console.log(start);
+        var transactions = await transaction.getByWalletId('admin');
+        transactions =await transaction.filterByTime(transactions,start,end);
+        res.json(transactions);
+    }
 }
 
 

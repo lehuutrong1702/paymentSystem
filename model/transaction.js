@@ -19,7 +19,7 @@ const t = class transaction {
         var wallet = await db.insert(tbName,transaction);
     }
     static async getByWalletId(walletId,page=1,perPage=10){
-        var transaction  = await db.findByField(tbName,"wallet_id",walletId,page,perPage);
+        var transaction  = await db.findByField(tbName,"walletId",walletId,page,perPage);
         return transaction ; 
     }
     static async getByTime(start,end,page=1,perPage=10){
@@ -27,9 +27,13 @@ const t = class transaction {
         return transaction ; 
     }
     static async filterByTime(transactions,start,end){
-        var result = transactions.filter(function(transaction) {
-            return (transaction.date >= start && transaction.date < end)
+        // console.log(start);
+        // console.log(end);
+        var result = await transactions.filter(function(transaction) {
+      
+            return (new Date(transaction.date) < new Date(end) && new Date(transaction.date) >= new Date(start))
           });
+        console.log(result);
         return result;
     }
 

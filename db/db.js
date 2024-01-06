@@ -7,8 +7,6 @@ const pgp = pg ({
     capSQL: true
 })
 
-
-
 const cn = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -23,8 +21,9 @@ const database = {
         let con = null;
         try{
             con = await db.connect();
-            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = $1
-             LIMIT ${perPage} OFFSET ${(page-1)*perPage} `, [value]);
+            const rs = await con.manyOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = '${value}'
+             LIMIT ${perPage} OFFSET ${(page-1)*perPage} `);
+            
             return rs;
         }catch(error){
             throw error;

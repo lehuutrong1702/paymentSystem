@@ -50,9 +50,6 @@ const userC = {
     
      payment: async function  payment(req,res) {
       try{  
-
-        
-
         const field = req.body;
         console.log(field);
         const w =  await wallet.getByID(req.params.id);
@@ -61,7 +58,7 @@ const userC = {
         let current = new Date();
         let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
         let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-        let dateTime = cDate + ' ' + cTime;
+        let dateTime = cDate  + ' ' +cTime;
        // console.log(dateTime);
       //  const dateFormatted = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`
         const userTransaction = new transaction(w.id, dateTime,field.balance);
