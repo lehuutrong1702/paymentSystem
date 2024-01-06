@@ -57,7 +57,7 @@ const database = {
             const rs = await con.oneOrNone(`SELECT * FROM "${tbName}" WHERE "${fieldName}" = $1`, [value]);
             return rs;
         }catch(error){
-            throw error;
+            throw error; 
         }finally{
             if(con){
                 con.done();

@@ -30,7 +30,6 @@ const t = class transaction {
         // console.log(start);
         // console.log(end);
         var result = await transactions.filter(function(transaction) {
-      
             return (new Date(transaction.date) < new Date(end) && new Date(transaction.date) >= new Date(start))
           });
         console.log(result);
