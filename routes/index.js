@@ -28,13 +28,24 @@ r.post('/refreshToken',(req,res)=>{
   })
 });
 
-r.post('/:id/payment',userController.payment)
+r.patch('/info/:id' , userController.payment)
 
-r.post('/',userController.create);
+ 
 
-r.post('/:id' , userController.loadMoney)
 
-r.get('/:id',userController.authenToken,userController.info);
+r.get('/admin',adminController.adminAuthen,async(req,res)=>{
+    const data= req.body;
+    console.log(data);
+    res.json(data);
+})
+
+
+r.get('/info/:id',userController.authenToken,async (req,res)=>{
+  console.log(req.params.id);
+
+  const rs =  await wallet.getByID(req.params.id);
+  res.json(rs);
+})
 
 r.route('/login').post((req,res) =>{
  

@@ -19,7 +19,8 @@ const adminController = {
         res.json(w);
     },
     adminAuthen:  function adminAuthen(req,res,next) {
-        const authorizationHeader = req.headers['authorization'];
+        next();
+        // const authorizationHeader = req.headers['authorization'];
       
         const token = authorizationHeader.split(' ')[1];
         if (!token) res.sendStatus(401);
@@ -30,14 +31,7 @@ const adminController = {
            next();
         })
       },
-    getAllTransaction: async (req,res,next) =>{
-        const start = req.query.start;
-        const end = req.query.end;
-        console.log(start);
-        var transactions = await transaction.getByWalletId('admin');
-        transactions =await transaction.filterByTime(transactions,start,end);
-        res.json(transactions);
-    }
+    
 }
 
 
