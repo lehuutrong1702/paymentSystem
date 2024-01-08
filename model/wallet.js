@@ -19,8 +19,19 @@ const v = class wallet {
         var wallet = await db.update(tbName, {field:'id', value:(wallet.id)}, wallet)
         console.log(wallet);
        // return wallet;
-        
+    };
+    static async getAll(page, perPage){
+        var wallet = await db.findAll(tbName, page, perPage)
+        return wallet;
+    } 
 
+    static async deleteWallet(id){
+        var wallet = await db.del(tbName, 'id' , id);
+        return wallet;
+    }
+    static async addWallet(wallet){
+        var wallet = await db.add(tbName, wallet);
+        return wallet;
     }
 
 }

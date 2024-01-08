@@ -80,6 +80,51 @@ const database = {
             }
         }
     },
+    findAll: async (tbName,page,perPage) => {
+        let con = null;
+        try{
+            console.log(tbName, page, perPage);
+            con= await db.connect();
+            const rs = await con.any(`SELECT * FROM "${tbName}" LIMIT ${perPage} OFFSET ${(page-1)*perPage}`);
+            return rs;
+        }catch(error){
+            throw error;
+        } finally{
+            if(con){
+                con.done();
+            }
+        }
+    },
+    add: async (tbName, obj)=>{
+        let con = null;
+        try{
+            con = await db.connect();
+            console.log(obj);
+            let sql = pgp.helpers.insert(obj, null, tbName);
+            console.log(sql);
+            await con.none(sql);
+        }catch(error){
+            throw error;
+        }finally{
+            if(con){
+                con.done();
+            }
+        }
+    },
+    del: async (tbName, fieldName, value) => {
+        let con = null;
+        try {
+            con = await db.connect();
+            let sql = `DELETE FROM "${tbName}" WHERE "${fieldName}" = $1`;
+            await con.none(sql, [String(value)]);
+        } catch (error){
+            throw error;
+        } finally {
+            if(con){
+                con.done();
+            }
+        }
+    }
 }
 
 export default database;

@@ -22,16 +22,65 @@ const adminController = {
         next();
         // const authorizationHeader = req.headers['authorization'];
       
-        const token = authorizationHeader.split(' ')[1];
-        if (!token) res.sendStatus(401);
-        jwt.verify(token,secret,(err,data)=>{
-           console.log(err,data);
-           if(err) res.sendStatus(403);
-          if(data.role != 'admin') res.sendStatus(401); 
-           next();
-        })
-      },
-    
+        // const token = authorizationHeader.split(' ')[1];
+        // if (!token) res.sendStatus(401);
+        // jwt.verify(token,secret,(err,data)=>{
+        //    console.log(err,data);
+        //    if(err) res.sendStatus(403);
+        //   if(data.role != 'admin') res.sendStatus(401); 
+        //    next();
+        // })
+    },
+    listUser: async(req, res, next) => {
+        try {
+            const rs = await wallet.getAll(req.query.page, req.query.perPage);
+            return res.render('listUser', {listUser: rs,
+                title: 'List Users'
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    addUser: async(req, res, next) => {
+        try {
+            const id = req.body.idUser;
+            const balance = req.body.balanceUser;
+            console.log(id, balance);
+            const rs1 = await wallet.addWallet(new wallet(id, balance));
+            const rs = await wallet.getAll(1, null);
+            return res.render('listUser', {listUser: rs,
+                title: 'List Users'
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    updateUser: async(req, res, next) => {
+        try {
+            const id = req.params.id;
+            const balance = req.body.balanceUser;
+            console.log(id, balance);
+            await wallet.updateBalance(new wallet(id, balance));
+            const rs = await wallet.getAll(1, null);
+            return res.render('listUser', {listUser: rs,
+                title: 'List Users'
+            })
+        } catch (error) {
+            next(error)
+        }
+    }, 
+    deleteUser: async(req, res, next) => {
+        try {
+            const id = req.params.id;
+            const rs = await wallet.deleteWallet(id);
+            const rs1 = await wallet.getAll(1, null);
+            return res.render('listUser', {listUser: rs1,
+                title: 'List Users'
+            })
+        } catch (error) {
+            next(error)
+        }
+    }   
 }
 
 
