@@ -28,7 +28,17 @@ r.post('/refreshToken',(req,res)=>{
   })
 });
 
-r.post('/:id/payment',userController.payment)
+r.route('/login').post((req,res) =>{
+ 
+  const data = req.body ;
+  console.log(data);
+  const accessToken =  jwt.sign(data,secret,{expiresIn:'60s'}); // parse
+
+  const refreshToken = jwt.sign(data,refresh);
+
+  res.json({accessToken,refreshToken});
+})
+r.post('/:id/payment',userController.authenToken,userController.payment)
 
 r.post('/',userController.create);
 
@@ -36,14 +46,5 @@ r.post('/:id' , userController.loadMoney)
 
 r.get('/:id',userController.authenToken,userController.info);
 
-r.route('/login').post((req,res) =>{
- 
-    const data = req.body ;
-    const accessToken =  jwt.sign(data,secret,{expiresIn:'60s'}); // parse
 
-    const refreshToken = jwt.sign(data,refresh);
-
-    res.json({accessToken,refreshToken});
-}
-)
-export default r ;
+export default r ;  
