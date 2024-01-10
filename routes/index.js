@@ -6,6 +6,7 @@ import wallet from '../model/wallet.js';
 
 import userController from '../controllers/user.c.js'
 import adminController from '../controllers/admin.c.js';
+import userC from '../controllers/user.c.js';
 dotenv.config();
 const secret= process.env.ACCESS_TOKEN_SECRET;
 const refresh = process.env.REFRESH_TOKEN_SECRET;
@@ -42,9 +43,9 @@ r.post('/:id/payment',userController.authenToken,userController.payment)
 
 r.post('/',userController.create);
 
-r.post('/:id' , userController.loadMoney)
+//r.post('/:id' , userController.loadMoney)
 
 r.get('/:id',userController.authenToken,userController.info);
-
+r.get('/:id/transactions',userController.getAllTransaction);
 
 export default r ;  

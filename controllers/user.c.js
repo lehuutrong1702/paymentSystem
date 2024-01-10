@@ -94,6 +94,17 @@ const userC = {
           res.status(404);
           res.json("not found id")
         } 
+      },
+      getAllTransaction: async(req,res,next)=>{
+        const start = req.query.start;
+        const end = req.query.end;
+        console.log(start);
+        console.log(req.params.id);
+        const id = req.params.id;
+        var transactions = await transaction.getByWalletId(`${id}`);
+        transactions =await transaction.filterByTime(transactions,start,end);
+        console.log(transactions);
+        res.json(transactions);
       }
       
 }
