@@ -62,6 +62,11 @@ const userC = {
         const field = req.body;
         console.log(field);
         const w =  await wallet.getByID(req.params.id);
+        w.balance = parseInt (newStr) + parseInt(field.balance);
+        if (w.balance < 0) {
+          
+          res.status(406);
+        }
         var date = new Date().getTime();
        // date= Date.parse(date);
         let current = new Date();
