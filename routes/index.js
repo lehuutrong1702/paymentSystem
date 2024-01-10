@@ -18,7 +18,7 @@ let refreshTokens = []; // database
 
 r.post('/refreshToken',(req,res)=>{
   const refreshToken = req.body.token;
-  if(!refreshToken) req.sendStatus(401);
+  if(!refreshToken) res.sendStatus(401);
   jwt.verify(refreshToken,refresh,(err,data)=>{
       console.log(err,data) ; 
       if(err) res.sendStatus(403);
