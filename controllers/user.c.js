@@ -62,10 +62,14 @@ const userC = {
         const field = req.body;
         console.log(field);
         const w =  await wallet.getByID(req.params.id);
+        var newStr = Number(w.balance.replace(/[^0-9.-]+/g,""));
+        console.log(newStr);
         w.balance = parseInt (newStr) + parseInt(field.balance);
         if (w.balance < 0) {
           
           res.status(406);
+          res.json("not enough money");
+          return ;
         }
         var date = new Date().getTime();
        // date= Date.parse(date);
@@ -81,9 +85,8 @@ const userC = {
         await transaction.createTransaction(userTransaction);
         await transaction.createTransaction(adminTransaction);
 
-        var newStr = Number(w.balance.replace(/[^0-9.-]+/g,""));
-        console.log(newStr);
-        w.balance = parseInt (newStr) + parseInt(field.balance);
+      
+        // w.balance = parseInt (newStr) + parseInt(field.balance);
         console.log(w);
         await wallet.updateBalance(w);
         const admin =   await wallet.getByID('admin');
